@@ -1,0 +1,17 @@
+name: hazelcast
+version: 1.0.0
+appVersion: "3.10.2"
+description: Operational, in-memory, distributed, computing platform for managing data and performing parallel execution for application speed and scale.
+keywords:
+- hazelcast
+- keyvalue
+- in-memory
+- database
+home: http://hazelcast.com/
+icon: http://hazelcast.com/images/logos/HazelcastLogo-Blue_Dark_Icon_200px.png
+sources:
+- https://github.com/hazelcast/hazelcast
+maintainers:
+- name: Hazelcast Integration Team
+  email: integration@hazelcast.com
+engine: gotpl

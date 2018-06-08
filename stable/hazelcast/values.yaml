@@ -1,0 +1,4 @@
+images:
+  hazelcast:
+    image: "hazelcast/hazelcast-kubernetes"
+    imageTag: "3.10.1"

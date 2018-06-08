@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hazelcast
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hazelcast
+    spec:
+      containers:
+      - name: hazelcast-node
+        image: {{ .Values.images.hazelcast.image }}
+        ports:
+        - containerPort: 5701
+        volumeMounts:
+        - name: hazelcast-storage
+          mountPath: /data/hazelcast
+        env:
+        - name: HZ_DATA
+          value: /data/hazelcast
+      volumes:
+      - name: hazelcast-storage
+        configMap:
+          name: hazelcast-configuration

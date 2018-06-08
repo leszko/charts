@@ -1,0 +1,8 @@
+Test NOTES
+
+TODO: 
+- Address of the Hazelcast inside the cluster
+- password
+- curl operations
+- Connecting with external client
+- expose PODs
