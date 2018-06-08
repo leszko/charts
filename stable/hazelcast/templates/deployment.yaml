@@ -1,13 +1,19 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1beta1
+kind: Deployment
 metadata:
   name: hazelcast
+  labels:
+    app: {{ template "hazelcast.name" . }}
+    chart: {{ template "hazelcast.chart" . }}
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
 spec:
-  replicas: 2
+  replicas: 3
   template:
     metadata:
       labels:
-        app: hazelcast
+        app: {{ template "hazelcast.name" . }}
+        release: "{{ .Release.Name }}"
     spec:
       containers:
       - name: hazelcast-node
