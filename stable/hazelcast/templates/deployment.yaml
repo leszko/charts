@@ -1,31 +1,60 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: hazelcast
+  name: {{ template "hazelcast.fullname" . }}
   labels:
     app: {{ template "hazelcast.name" . }}
     chart: {{ template "hazelcast.chart" . }}
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  replicas: 3
+  replicas: {{ .Values.cluster.memberCount }}
   template:
     metadata:
       labels:
         app: {{ template "hazelcast.name" . }}
         release: "{{ .Release.Name }}"
     spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+        {{- end}}
+      {{- end}}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       containers:
-      - name: hazelcast-node
-        image: {{ .Values.images.hazelcast.image }}
+      - name: {{ template "hazelcast.fullname" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
         ports:
-        - containerPort: 5701
+        - name: hazelcast
+          containerPort: 5701
+        livenessProbe:
+          httpGet:
+            path: /hazelcast/health/node-state
+            port: 5701
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         volumeMounts:
         - name: hazelcast-storage
           mountPath: /data/hazelcast
         env:
         - name: HZ_DATA
           value: /data/hazelcast
+        - name: MIN_HEAP_SIZE
+          value: {{ .Values.hazelcast.heap.minSize }}
+        - name: MAX_HEAP_SIZE
+          value: {{ .Values.hazelcast.heap.maxSize }}
+        - name: JAVA_OPTS
+          value: "-Dhazelcast.rest.enabled={{ .Values.hazelcast.rest }} {{ .Values.hazelcast.javaOpts }}"
       volumes:
       - name: hazelcast-storage
         configMap:

@@ -1,4 +1,58 @@
-images:
-  hazelcast:
-    image: "hazelcast/hazelcast-kubernetes"
-    imageTag: "3.10.1"
+## Hazelcast image version
+## ref: https://hub.docker.com/r/hazelcast/hazelcast-kubernetes/tags/
+##
+image:
+  repository: "hazelcast/hazelcast-kubernetes"
+  tag: "3.10.2"
+  ## Specify an imagePullPolicy (Required)
+  ## It's recommended to change this to 'Always' if the image tag is 'latest'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+## Cluster settings
+cluster:
+  memberCount: 2
+
+## Hazelcast properties
+hazelcast:
+  heap:
+    minSize: 128m
+    maxSize: 256m
+  rest: true
+  javaOpts:
+
+## Node selector
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+nodeSelector: {}
+
+## Hazelcast Liveness probe
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+
+## Hazelcast Service properties
+service:
+  ## Service Type: 'ClusterIP' or 'LoadBalancer', or 'NodePort'
+  type: ClusterIP
+  port: 5701
+
+## Role-based Access Control
+rbac:
+  install: true
