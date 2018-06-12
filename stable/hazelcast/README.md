@@ -54,6 +54,7 @@ The following table lists the configurable parameters of the Hazelcast chart and
 | `hazelcast.heap.maxSize`                   | Maximum Heap Size for Hazelcast member                                                                         | `256m`                                               |
 | `hazelcast.rest`                           | Enable REST endpoints for Hazelcast member                                                                     | `true`                                               |
 | `hazelcast.javaOpts`                       | Additional JAVA_OPTS properties for Hazelcast member                                                           | `nil`                                                |
+| `hazelcast.configurationFiles`             | Hazelcast configuration files                                                                                  | `{DEFAULT_HAZELCAST_XML}`                            |
 | `nodeSelector`                             | Hazelcast Node labels for pod assignment                                                                       | `nil`                                                |
 | `livenessProbe.enabled`                    | Turn on and off liveness probe                                                                                 | `true`                                               |
 | `livenessProbe.initialDelaySeconds`        | Delay before liveness probe is initiated                                                                       | `30`                                                 |
@@ -83,3 +84,34 @@ $ helm install --name my-release -f values.yaml stable/hazelcast
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
+
+## Custom Hazelcast configuration
+
+Custom Hazelcast configuration can be specified inside `values.yaml`, as the `hazelcast.configurationFiles.hazelcast.xml` property.
+
+```yaml
+hazelcast:
+  configurationFiles:
+    hazelcast.xml: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <hazelcast xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.10.xsd"
+                     xmlns="http://www.hazelcast.com/schema/config"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+        <properties>
+          <property name="hazelcast.discovery.enabled">true</property>
+        </properties>
+        <network>
+          <join>
+            <multicast enabled="false"/>
+            <tcp-ip enabled="false" />
+            <discovery-strategies>
+              <discovery-strategy enabled="true" class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+              </discovery-strategy>
+            </discovery-strategies>
+          </join>
+        </network>
+
+        <!-- Custom Configuration Placeholder -->
+      </hazelcast>
+```
