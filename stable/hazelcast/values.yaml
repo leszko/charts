@@ -33,6 +33,7 @@ nodeSelector: {}
 
 ## Hazelcast Liveness probe
 livenessProbe:
+  enabled: true
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5

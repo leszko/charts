@@ -34,6 +34,7 @@ spec:
         ports:
         - name: hazelcast
           containerPort: 5701
+        {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           httpGet:
             path: /hazelcast/health/node-state
@@ -43,6 +44,7 @@ spec:
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        {{- end }}
         volumeMounts:
         - name: hazelcast-storage
           mountPath: /data/hazelcast

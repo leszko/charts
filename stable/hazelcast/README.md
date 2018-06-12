@@ -43,6 +43,43 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the Hazelcast chart and their default values.
 
-| Parameter                                  | Description                                                                                                    | Default                              |
-|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| `image`                           | Hazelcast Image registry                                                                                           | `docker.io`                                          |
+| Parameter                                  | Description                                                                                                    | Default                                              |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| `image.repository`                         | Hazelcast Image name                                                                                           | `hazelcast/hazelcast-kubernetes`                     |
+| `image.tag`                                | Hazelcast Image tag                                                                                            | `{VERSION}`                                          |
+| `image.pullPolicy`                         | Image pull policy                                                                                              | `IfNotPresent`                                       |
+| `image.pullSecrets`                        | Specify docker-registry secret names as an array                                                               | `nil`                                                |
+| `cluster.memberCount`                      | Number of Hazelcast members                                                                                    | 2                                                    |
+| `hazelcast.heap.minSize`                   | Minimum Heap Size for Hazelcast member                                                                         | `128m`                                               |
+| `hazelcast.heap.maxSize`                   | Maximum Heap Size for Hazelcast member                                                                         | `256m`                                               |
+| `hazelcast.rest`                           | Enable REST endpoints for Hazelcast member                                                                     | `true`                                               |
+| `hazelcast.javaOpts`                       | Additional JAVA_OPTS properties for Hazelcast member                                                           | `nil`                                                |
+| `nodeSelector`                             | Hazelcast Node labels for pod assignment                                                                       | `nil`                                                |
+| `livenessProbe.enabled`                    | Turn on and off liveness probe                                                                                 | `true`                                               |
+| `livenessProbe.initialDelaySeconds`        | Delay before liveness probe is initiated                                                                       | `30`                                                 |
+| `livenessProbe.periodSeconds`              | How often to perform the probe                                                                                 | `10`                                                 |
+| `livenessProbe.timeoutSeconds`             | When the probe times out                                                                                       | `5`                                                  |
+| `livenessProbe.successThreshold`           | Minimum consecutive successes for the probe to be considered successful after having failed                    | `1`                                                  |
+| `livenessProbe.failureThreshold`           | Minimum consecutive failures for the probe to be considered failed after having succeeded.                     | `3`                                                  |
+| `resources`                                | CPU/Memory resource requests/limits                                                                            | Memory: `256Mi`, CPU: `100m`                         |
+| `service.type`                             | Kubernetes service type ('ClusterIP', 'LoadBalancer', or 'NodePort')                                           | `ClusterIP`                                          |
+| `service.port`                             | Kubernetes service port                                                                                        | `5701`                                               |
+| `rbac.install`                             | Enable installing RBAC Role authorization                                                                      | `true`                                               |
+
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+
+```bash
+$ helm install --name my-release \
+  --set cluster.memberCount=3,hazelcast.rest=false \
+    stable/hazelcast
+```
+
+The above command sets number of Hazelcast members to 3 and disables REST endpoints.
+
+Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+
+```bash
+$ helm install --name my-release -f values.yaml stable/hazelcast
+```
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
