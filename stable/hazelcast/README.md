@@ -65,7 +65,7 @@ The following table lists the configurable parameters of the Hazelcast chart and
 | `resources`                                | CPU/Memory resource requests/limits                                                                            | Memory: `256Mi`, CPU: `100m`                         |
 | `service.type`                             | Kubernetes service type ('ClusterIP', 'LoadBalancer', or 'NodePort')                                           | `ClusterIP`                                          |
 | `service.port`                             | Kubernetes service port                                                                                        | `5701`                                               |
-| `rbac.install`                             | Enable installing RBAC Role authorization                                                                      | `true`                                               |
+| `rbac.create`                              | Enable installing RBAC Role authorization                                                                      | `true`                                               |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 

@@ -2,30 +2,38 @@
 ## ref: https://hub.docker.com/r/hazelcast/hazelcast-kubernetes/tags/
 ##
 image:
+  # repository is the Hazelcast image name
   repository: "hazelcast/hazelcast-kubernetes"
+  # tag is the Hazelcast image tag
   tag: "3.10.2"
-  ## Specify an imagePullPolicy (Required)
-  ## It's recommended to change this to 'Always' if the image tag is 'latest'
-  ## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
-  ##
+  # pullPolicy is the Docker image pull policy
+  # It's recommended to change this to 'Always' if the image tag is 'latest'
+  # ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+  #
   pullPolicy: IfNotPresent
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  # pullSecrets is an array of docker-registry secret names
+  # Secrets must be manually created in the namespace.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   # pullSecrets:
   #   - myRegistryKeySecretName
 
-## Cluster settings
+# Cluster settings
 cluster:
+  # memberCount is the number Hazelcast members
   memberCount: 2
 
-## Hazelcast properties
+# Hazelcast properties
 hazelcast:
   heap:
+    # minSize is the minimum heap size for Hazelcast member
     minSize: 128m
+    # maxSize is the maximum heap size for Hazelcast member
     maxSize: 256m
+  # rest is a flag used to enable REST endpoints for Hazelcast member
   rest: true
+  # javaOpts are additional JAVA_OPTS properties for Hazelcast member
   javaOpts:
+  # configurationFiles are Hazelcast configuration files
   configurationFiles:
     hazelcast.xml: |-
       <?xml version="1.0" encoding="UTF-8"?>
@@ -49,33 +57,41 @@ hazelcast:
       </hazelcast>
 
 
-## Node selector
-## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+# nodeSelector is an array of Hazelcast Node labels for POD assignments
+# ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
 nodeSelector: {}
 
-## Hazelcast Liveness probe
+# Hazelcast Liveness probe
 livenessProbe:
+  # enabled is a flag to used to enable liveness probe
   enabled: true
+  # initialDelaySeconds is a delay before liveness probe is initiated
   initialDelaySeconds: 30
+  # periodSeconds decides how often to perform the probe
   periodSeconds: 10
+  # timeoutSeconds decides when the probe times out
   timeoutSeconds: 5
+  # successThreshold is the minimum consecutive successes for the probe to be considered successful after having failed
   successThreshold: 1
+  # failureThreshold is the minimum consecutive failures for the probe to be considered failed after having succeeded
   failureThreshold: 3
 
-## Configure resource requests and limits
-## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-##
+# Configure resource requests and limits
+# ref: http://kubernetes.io/docs/user-guide/compute-resources/
+#
 resources:
   requests:
     memory: 256Mi
     cpu: 100m
 
-## Hazelcast Service properties
+# Hazelcast Service properties
 service:
-  ## Service Type: 'ClusterIP' or 'LoadBalancer', or 'NodePort'
+  # type defines the Kubernetes service type ('ClusterIP', 'LoadBalancer', or 'NodePort')
   type: ClusterIP
+  # port is the Kubernetes service port
   port: 5701
 
-## Role-based Access Control
+# Role-based Access Control
 rbac:
-  install: true
+  # create is a flag which enables installing RBAC Role authorization
+  create: true
