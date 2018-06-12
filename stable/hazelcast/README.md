@@ -1,7 +1,6 @@
 # Hazelcast
 
-[Hazelcast](http://hazelcast.com/) is an operational, in-memory, distributed, computing platform for managing data and performing parallel execution for application speed and scale.
-
+[Hazelcast IMDG](http://hazelcast.com/) is the most widely used in-memory data grid with hundreds of thousands of installed clusters around the world. It offers caching solutions ensuring that data is in the right place when it’s needed for optimal performance.
 
 ## Quick Start
 
