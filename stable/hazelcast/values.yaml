@@ -24,11 +24,6 @@ cluster:
 
 # Hazelcast properties
 hazelcast:
-  heap:
-    # minSize is the minimum heap size for Hazelcast member
-    minSize: 128m
-    # maxSize is the maximum heap size for Hazelcast member
-    maxSize: 256m
   # rest is a flag used to enable REST endpoints for Hazelcast member
   rest: true
   # javaOpts are additional JAVA_OPTS properties for Hazelcast member

@@ -51,10 +51,6 @@ spec:
         env:
         - name: HZ_DATA
           value: /data/hazelcast
-        - name: MIN_HEAP_SIZE
-          value: {{ .Values.hazelcast.heap.minSize }}
-        - name: MAX_HEAP_SIZE
-          value: {{ .Values.hazelcast.heap.maxSize }}
         - name: JAVA_OPTS
           value: "-Dhazelcast.rest.enabled={{ .Values.hazelcast.rest }} {{ .Values.hazelcast.javaOpts }}"
       volumes:
