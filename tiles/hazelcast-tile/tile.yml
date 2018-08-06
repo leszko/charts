@@ -1,0 +1,10 @@
+---
+name: hazelcast
+icon_file: icon.png
+label: Hazelcast
+description: Hazelcast k8s Tile
+
+packages:
+- name: hazelcast
+  type: kibosh
+  helm_chart_dir: ../../stable/hazelcast
