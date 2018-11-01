@@ -1,4 +1,4 @@
-{{- if .Values.hazelcast.configurationFiles }}
+{{- if .Values.hazelcast.configuration }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,8 +9,6 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 data:
-{{- range $key, $val := .Values.hazelcast.configurationFiles }}
-  {{ $key }}: |-
-{{ $val | indent 4}}
-{{- end }}
+  hazelcast: |-
+{{ toYaml .Values.hazelcast.configuration | indent 4 }}
 {{- end -}}
